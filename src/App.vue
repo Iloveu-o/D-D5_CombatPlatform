@@ -1,6 +1,24 @@
 <template>
   <div id="app" class="bg3-theme">
-    <header class="top-bar">
+    <div class="app-nav">
+      <button 
+        class="nav-btn" 
+        :class="{ active: viewMode === 'combat' }"
+        @click="viewMode = 'combat'"
+      >
+        Combat Tracker
+      </button>
+      <button 
+        class="nav-btn" 
+        :class="{ active: viewMode === 'rules' }"
+        @click="viewMode = 'rules'"
+      >
+        Rules Knowledge Base
+      </button>
+    </div>
+
+    <div v-if="viewMode === 'combat'" class="combat-view">
+      <header class="top-bar">
       <div class="turn-info">
         <div class="turn-count">Turn: {{ state.turnCount }}</div>
         <div class="round-count">Round: {{ state.roundCount }}</div>
@@ -48,6 +66,12 @@
       <UnitInspector :unitId="state.selectedUnitId" />
     </div>
 
+    </div>
+
+    <div v-if="viewMode === 'rules'" class="rules-view">
+      <RulesPage />
+    </div>
+
     <!-- Add Unit Modal -->
     <div v-if="showAddModal" class="modal-overlay">
       <div class="modal-content">
@@ -85,17 +109,21 @@
 <script>
 import { ref, computed, onMounted } from 'vue';
 import { useCombat } from './composables/useCombat';
+import { useRulesTooltip } from './composables/useRulesTooltip';
 import { Unit, Faction } from './models/Unit';
 import InitiativeBar from './components/InitiativeBar.vue';
 import UnitInspector from './components/UnitInspector.vue';
+import RulesPage from './components/RulesKnowledgeBase/RulesPage.vue';
 
 export default {
   name: 'App',
   components: {
     InitiativeBar,
-    UnitInspector
+    UnitInspector,
+    RulesPage
   },
   setup() {
+    const viewMode = ref('combat');
     const { 
       state, 
       activeUnit, 
@@ -109,6 +137,8 @@ export default {
       initDemoData 
     } = useCombat();
 
+    const { init: initTooltips } = useRulesTooltip();
+
     const isReordering = ref(false);
     const showAddModal = ref(false);
 
@@ -121,6 +151,7 @@ export default {
 
     onMounted(() => {
       initDemoData();
+      initTooltips();
     });
 
     const toggleReorder = () => {
@@ -164,6 +195,7 @@ export default {
     });
 
     return {
+      viewMode,
       state,
       activeUnit,
       selectedUnit,
@@ -323,4 +355,56 @@ body {
   gap: 10px;
   margin-top: 20px;
 }
+
+  /* Custom Scrollbar for Webkit */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #1a1a1a; 
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #555; 
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #777; 
+  }
+
+  .app-nav {
+    display: flex;
+    background: #111;
+    border-bottom: 1px solid #333;
+  }
+
+  .nav-btn {
+    flex: 1;
+    background: #111;
+    color: #888;
+    border: none;
+    padding: 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+  }
+
+  .nav-btn:hover {
+    color: #ccc;
+    background: #1a1a1a;
+  }
+
+  .nav-btn.active {
+    color: #fff;
+    border-bottom-color: #e11d48; /* Red accent */
+    background: #1a1a1a;
+  }
+
+  .combat-view, .rules-view {
+    height: calc(100vh - 54px); /* Subtract nav height */
+    display: flex;
+    flex-direction: column;
+  }
 </style>
