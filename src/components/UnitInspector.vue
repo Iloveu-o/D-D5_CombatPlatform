@@ -52,6 +52,54 @@
           </div>
         </div>
 
+        <div class="details-section extended-stats">
+          <h3>Unit Details</h3>
+          <div class="detail-row">
+            <label>Type</label>
+            <input v-model="unit.customProps.type" placeholder="e.g. Humanoid" />
+          </div>
+          <div class="detail-row">
+            <label>Size</label>
+            <input v-model="unit.customProps.size" placeholder="e.g. Medium" />
+          </div>
+          <div class="detail-row">
+            <label>Speed</label>
+            <input v-model="unit.customProps.speed" placeholder="e.g. 30ft" />
+          </div>
+          <div class="detail-row full-width">
+            <label>Saving Throws</label>
+            <input v-model="unit.customProps.saves" placeholder="e.g. Str +2, Con +4" />
+          </div>
+          <div class="detail-row full-width">
+            <label>Skills</label>
+            <input v-model="unit.customProps.skills" placeholder="e.g. Perception +5, Stealth +3" />
+          </div>
+          <div class="detail-row full-width">
+            <label>Vulnerabilities</label>
+            <input v-model="unit.customProps.vulnerabilities" placeholder="Damage Vulnerabilities" />
+          </div>
+          <div class="detail-row full-width">
+            <label>Resistances</label>
+            <input v-model="unit.customProps.resistances" placeholder="Damage Resistances" />
+          </div>
+          <div class="detail-row full-width">
+            <label>Immunities</label>
+            <input v-model="unit.customProps.immunities" placeholder="Damage Immunities" />
+          </div>
+          <div class="detail-row full-width">
+            <label>Condition Immunities</label>
+            <input v-model="unit.customProps.conditionImmunities" placeholder="Condition Immunities" />
+          </div>
+          <div class="detail-row full-width">
+            <label>Senses</label>
+            <input v-model="unit.customProps.senses" placeholder="e.g. Darkvision 60ft" />
+          </div>
+          <div class="detail-row full-width">
+            <label>Languages</label>
+            <input v-model="unit.customProps.languages" placeholder="e.g. Common, Elvish" />
+          </div>
+        </div>
+
         <div class="details-section">
           <h3>Status Effects</h3>
           <div class="status-list">
@@ -389,6 +437,38 @@ export default {
   color: #fff;
   padding: 4px 8px;
   border-radius: 4px;
+}
+
+.extended-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.detail-row {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 30%;
+  min-width: 120px;
+}
+
+.detail-row.full-width {
+  flex: 1 1 100%;
+}
+
+.detail-row label {
+  font-size: 11px;
+  color: #aaa;
+  margin-bottom: 2px;
+}
+
+.detail-row input {
+  background: #333;
+  border: 1px solid #555;
+  color: #fff;
+  padding: 6px;
+  border-radius: 4px;
+  font-size: 13px;
 }
 
 textarea {
