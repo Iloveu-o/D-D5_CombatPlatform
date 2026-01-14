@@ -8,7 +8,8 @@
   >
     <div class="tooltip-term">{{ item.term }}</div>
     <div class="tooltip-content">
-      <ParsedText :text="item.definition" :level="level" />
+      <AstRenderer v-if="isAST" :ast="item.definition" :level="level" />
+      <ParsedText v-else :text="item.definition" :level="level" />
     </div>
   </div>
 </template>
@@ -16,11 +17,12 @@
 <script>
 import { computed, ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import ParsedText from './ParsedText.vue';
+import AstRenderer from '../Editor/AstRenderer.vue';
 import { useRulesTooltip } from '../../composables/useRulesTooltip';
 
 export default {
   name: 'TooltipNode',
-  components: { ParsedText },
+  components: { ParsedText, AstRenderer },
   props: {
     item: {
       type: Object,
@@ -36,6 +38,8 @@ export default {
     const nodeRef = ref(null);
     const position = ref({ top: 0, left: 0 });
     const isVisible = ref(false);
+    
+    const isAST = computed(() => Array.isArray(props.item.definition));
     
     // Level in stack is index.
     // Content inside this tooltip will be at level index + 1.
@@ -110,7 +114,8 @@ export default {
     return {
       computedStyle,
       level,
-      nodeRef
+      nodeRef,
+      isAST
     };
   }
 }

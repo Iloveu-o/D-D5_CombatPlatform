@@ -15,6 +15,13 @@
       >
         Rules Knowledge Base
       </button>
+      <button 
+        class="nav-btn" 
+        :class="{ active: viewMode === 'editor' }"
+        @click="viewMode = 'editor'"
+      >
+        Term Editor
+      </button>
     </div>
 
     <div v-if="viewMode === 'combat'" class="combat-view">
@@ -72,6 +79,12 @@
       <RulesPage />
     </div>
 
+    <div v-if="viewMode === 'editor'" class="editor-view">
+      <TermEditorPage />
+    </div>
+
+    <TooltipLayer />
+
     <!-- Add Unit Modal -->
     <div v-if="showAddModal" class="modal-overlay">
       <div class="modal-content">
@@ -108,19 +121,23 @@
 
 <script>
 import { ref, computed, onMounted } from 'vue';
-import { useCombat } from './composables/useCombat';
-import { useRulesTooltip } from './composables/useRulesTooltip';
-import { Unit, Faction } from './models/Unit';
-import InitiativeBar from './components/InitiativeBar.vue';
-import UnitInspector from './components/UnitInspector.vue';
-import RulesPage from './components/RulesKnowledgeBase/RulesPage.vue';
+import { useCombat } from './features/CombatTracker/composables/useCombat';
+import { useRulesTooltip } from './features/KnowledgeBase/composables/useRulesTooltip';
+import { Unit, Faction } from './features/CombatTracker/models/Unit';
+import InitiativeBar from './features/CombatTracker/components/InitiativeBar.vue';
+import UnitInspector from './features/CombatTracker/components/UnitInspector.vue';
+import RulesPage from './features/KnowledgeBase/components/View/RulesPage.vue';
+import TermEditorPage from './features/KnowledgeBase/components/Editor/TermEditorPage.vue';
+import TooltipLayer from './features/KnowledgeBase/components/View/TooltipLayer.vue';
 
 export default {
   name: 'App',
   components: {
     InitiativeBar,
     UnitInspector,
-    RulesPage
+    RulesPage,
+    TermEditorPage,
+    TooltipLayer
   },
   setup() {
     const viewMode = ref('combat');

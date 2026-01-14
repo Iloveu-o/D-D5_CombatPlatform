@@ -9,7 +9,7 @@
     @mouseleave="onMouseLeave"
     ref="termRef"
   >
-    {{ term }}
+    {{ label || term }}
   </span>
 </template>
 
@@ -24,6 +24,10 @@ export default {
     term: {
       type: String,
       required: true
+    },
+    label: {
+      type: String,
+      default: ''
     },
     level: {
       type: Number,
